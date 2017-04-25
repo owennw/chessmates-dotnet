@@ -22,13 +22,13 @@
 
         public IHttpActionResult GetPlayer(string id)
         {
-            var product = this.players.FirstOrDefault(p => p.Id == id);
-            if (product == null)
+            var player = this.players.FirstOrDefault(p => p.Id == id);
+            if (player == null)
             {
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(player);
         }
     }
 }

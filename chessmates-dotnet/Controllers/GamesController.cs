@@ -3,6 +3,7 @@
     using chessmates_dotnet.Models;
     using chessmates_dotnet.Repositories;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     public class GamesController : ApiController
@@ -14,14 +15,14 @@
             this.repository = new GamesRepository();
         }
 
-        public IEnumerable<Game> GetAllGames()
+        public async Task<Game[]> GetAllGames()
         {
-            return this.repository.GetAll();
+            return await this.repository.GetAll();
         }
 
-        public IHttpActionResult GetGame(string id)
+        public async Task<IHttpActionResult> GetGame(string id)
         {
-            var match = this.repository.GetById(id);
+            var match = await this.repository.GetById(id);
             if (match == null)
             {
                 return NotFound();

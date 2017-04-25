@@ -1,29 +1,42 @@
-﻿using chessmates_dotnet.Models;
-using chessmates_dotnet.StubData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace chessmates_dotnet.Repositories
+﻿namespace chessmates_dotnet.Repositories
 {
+    using chessmates_dotnet.Lichess;
+    using chessmates_dotnet.Models;
+    using System.Collections;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class GamesRepository : IRepository<Game>
     {
-        private Game[] games;
+        private IApiService<Game> apiService;
+        private PlayerRepository playerRepository;
 
         public GamesRepository()
         {
-            this.games = StubGames.GetGames();
+            this.apiService = new LichessApiService<Game>();
+            this.playerRepository = new PlayerRepository();
         }
 
-        public Game[] GetAll()
+        public async Task<Game[]> GetAll()
         {
-            return this.games;
+            var players = await this.playerRepository.GetAll();
+
+            var playersCrossTable = players
+                .SelectMany(p1 => players, (p1, p2) => new { a = p1, b = p2 })
+                .Where(pc => pc.a != pc.b);
+
+            var games = playersCrossTable
+                .Select(async pc => await this.apiService.Get($"games/vs/{pc.a}/{pc.b}"));
+
+            var jointTask = await Task.WhenAll(games);
+            return jointTask.SelectMany(g => g).ToArray();
         }
 
-        public Game GetById(string id)
+        public async Task<Game> GetById(string id)
         {
-            return this.GetAll().FirstOrDefault(g => g.Id == id);
+            var games = await this.GetAll();
+
+            return games.FirstOrDefault(g => g.Id == id);
         }
     }
 }

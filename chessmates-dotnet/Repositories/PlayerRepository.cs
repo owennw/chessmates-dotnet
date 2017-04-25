@@ -1,29 +1,30 @@
-﻿using chessmates_dotnet.Models;
-using chessmates_dotnet.StubData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace chessmates_dotnet.Repositories
+﻿namespace chessmates_dotnet.Repositories
 {
+    using chessmates_dotnet.Lichess;
+    using chessmates_dotnet.Models;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class PlayerRepository : IRepository<Player>
     {
-        private Player[] players;
+        private IApiService<Player> apiService;
 
         public PlayerRepository()
         {
-            this.players = StubPlayers.GetPlayers();
+            this.apiService = new LichessApiService<Player>();
         }
 
-        public Player[] GetAll()
+        public async Task<Player[]> GetAll()
         {
-            return this.players;
+
+            return await this.apiService.Get("user?team=scott-logic");
         }
 
-        public Player GetById(string id)
+        public async Task<Player> GetById(string id)
         {
-            return this.GetAll().FirstOrDefault(p => p.Id == id);
+            var players = await this.GetAll();
+
+            return players.FirstOrDefault(p => p.Id == id);
         }
     }
 }

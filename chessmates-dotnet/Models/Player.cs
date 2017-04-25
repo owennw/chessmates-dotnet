@@ -8,5 +8,10 @@
         public bool Online { get; set; }
         public long CreatedAt { get; set; }
         public long SeenAt { get; set; }
+
+        public override string ToString()
+        {
+            return this.Id;
+        }
     }
 }

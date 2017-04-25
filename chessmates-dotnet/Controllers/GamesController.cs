@@ -1,28 +1,27 @@
 ﻿namespace chessmates_dotnet.Controllers
 {
     using chessmates_dotnet.Models;
-    using chessmates_dotnet.StubData;
+    using chessmates_dotnet.Repositories;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Http;
 
     public class GamesController : ApiController
     {
-        private Game[] matches;
+        private IRepository<Game> repository;
 
         public GamesController()
         {
-            this.matches = StubGames.GetGames();
+            this.repository = new GamesRepository();
         }
 
         public IEnumerable<Game> GetAllGames()
         {
-            return this.matches;
+            return this.repository.GetAll();
         }
 
         public IHttpActionResult GetGame(string id)
         {
-            var match = this.matches.FirstOrDefault(m => m.Id == id);
+            var match = this.repository.GetById(id);
             if (match == null)
             {
                 return NotFound();

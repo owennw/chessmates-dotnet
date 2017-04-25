@@ -20,7 +20,7 @@
             return this.players;
         }
 
-        public IHttpActionResult player(string id)
+        public IHttpActionResult GetPlayer(string id)
         {
             var product = this.players.FirstOrDefault(p => p.Id == id);
             if (product == null)

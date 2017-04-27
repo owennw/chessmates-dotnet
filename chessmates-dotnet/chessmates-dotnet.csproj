@@ -13,7 +13,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>chessmates_dotnet</RootNamespace>
-    <AssemblyName>chessmates-dotnet</AssemblyName>
+    <AssemblyName>chessmates_dotnet</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -93,6 +93,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <EmbeddedResource Include="Mappings\Game.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Player.hbm.xml" />
+    <Content Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mappings\RatingStats.hbm.xml" />
+    <Content Include="Mappings\GameTypes.hbm.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +111,8 @@
     </Compile>
     <Compile Include="Lichess\LichessApi.cs" />
     <Compile Include="Models\Clock.cs" />
-    <Compile Include="Models\GameType.cs" />
+    <Compile Include="Models\GameTypes.cs" />
+    <Compile Include="Models\RatingStats.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Perfs.cs" />
     <Compile Include="Models\Player.cs" />
@@ -112,9 +120,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GamesRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\NHibernateHelper.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
-    <Compile Include="StubData\StubGames.cs" />
-    <Compile Include="StubData\StubPlayers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

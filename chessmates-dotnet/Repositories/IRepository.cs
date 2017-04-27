@@ -6,5 +6,6 @@
     {
         Task<T[]> GetAll();
         Task<T> GetById(string id);
+        void Add(T item);
     }
 }

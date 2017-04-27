@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="chessmates_dotnet"
+                   namespace="chessmates_dotnet.Models"
+>
+  <class name="Player">
+    <id name="Id"></id>
+    <property name="Username" />
+    <property name="CreatedAt" column="created_at" />
+  </class>
+</hibernate-mapping>

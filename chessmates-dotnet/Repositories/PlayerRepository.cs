@@ -2,6 +2,7 @@
 {
     using chessmates_dotnet.Lichess;
     using chessmates_dotnet.Models;
+    using NHibernate;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -16,8 +17,11 @@
 
         public async Task<Player[]> GetAll()
         {
+            var players = await this.apiService.Get("user?team=scott-logic");
 
-            return await this.apiService.Get("user?team=scott-logic");
+            this.RefreshCache(players);
+
+            return players;
         }
 
         public async Task<Player> GetById(string id)
@@ -25,6 +29,39 @@
             var players = await this.GetAll();
 
             return players.FirstOrDefault(p => p.Id == id);
+        }
+
+        public void Add(Player player)
+        {
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    session.Save(player);
+                    transaction.Commit();
+                }
+            }
+        }
+
+        private void AddBulk(Player[] players)
+        {
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    foreach (var player in players)
+                    {
+                        session.Save(player);
+                    }
+
+                    transaction.Commit();
+                }
+            }
+        }
+
+        private void RefreshCache(Player[] players)
+        {
+            this.AddBulk(players);
         }
     }
 }

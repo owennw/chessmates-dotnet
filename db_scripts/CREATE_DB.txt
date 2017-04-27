@@ -1,0 +1,34 @@
+CREATE DATABASE `chessmates`;
+
+CREATE TABLE `chessmates`.`player` (
+  `id` VARCHAR(45) NOT NULL,
+  `username` VARCHAR(45) NOT NULL,
+  `created_at` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+  
+CREATE TABLE `chessmates`.`game_type` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+  
+CREATE TABLE `chessmates`.`rating_stats` (
+  `id` INT NOT NULL,
+  `player_id` VARCHAR(45) NOT NULL,
+  `game_type_id` INT NOT NULL,
+  `games` INT NOT NULL,
+  `rating` INT NOT NULL,
+  `progression` INT NULL,
+  `deviation` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `player_id_idx` (`player_id` ASC),
+  INDEX `fk_game_type_idx` (`game_type_id` ASC),
+  CONSTRAINT `fk_player`
+    FOREIGN KEY (`player_id`)
+    REFERENCES `chessmates`.`player` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_game_type`
+    FOREIGN KEY (`game_type_id`)
+    REFERENCES `chessmates`.`game_type` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

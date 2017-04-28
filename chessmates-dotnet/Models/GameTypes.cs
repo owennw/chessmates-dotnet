@@ -1,4 +1,6 @@
-﻿namespace chessmates_dotnet.Models
+﻿using NHibernate.Type;
+
+namespace chessmates_dotnet.Models
 {
     public enum GameTypes
     {
@@ -13,5 +15,12 @@
         Atomic,
         Antichess,
         ThreeCheck,
+    }
+
+    public class GameTypesType : EnumStringType
+    {
+        public GameTypesType() : base(typeof(GameTypes), 45)
+        {
+        }
     }
 }

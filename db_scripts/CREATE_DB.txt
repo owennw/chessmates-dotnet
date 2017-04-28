@@ -7,14 +7,13 @@ CREATE TABLE `chessmates`.`player` (
   PRIMARY KEY (`id`));
   
 CREATE TABLE `chessmates`.`game_type` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(45) NULL,
+  `id` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
   
 CREATE TABLE `chessmates`.`rating_stats` (
   `id` INT NOT NULL,
   `player_id` VARCHAR(45) NOT NULL,
-  `game_type_id` INT NOT NULL,
+  `game_type_id` VARCHAR(45) NOT NULL,
   `games` INT NOT NULL,
   `rating` INT NOT NULL,
   `progression` INT NULL,

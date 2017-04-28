@@ -3,6 +3,7 @@
     using chessmates_dotnet.Lichess;
     using chessmates_dotnet.Models;
     using NHibernate;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -37,24 +38,37 @@
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Save(player);
+                    session.SaveOrUpdate(player);
                     transaction.Commit();
                 }
             }
         }
 
-        private void AddBulk(Player[] players)
+        public void AddBulk(Player[] players)
         {
-            using (ISession session = NHibernateHelper.OpenSession())
+            foreach (var player in players)
             {
-                using (ITransaction transaction = session.BeginTransaction())
+                var perfs = player.Perfs;
+                var addStatsToPlayer = this.AddStats(player);
+
+                addStatsToPlayer(perfs.Blitz);
+                addStatsToPlayer(perfs.Classical);
+                addStatsToPlayer(perfs.Bullet);
+                addStatsToPlayer(perfs.Puzzle);
+                addStatsToPlayer(perfs.Correspondence);
+            }
+
+            foreach (var player in players)
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
                 {
-                    foreach (var player in players)
+                    using (ITransaction transaction = session.BeginTransaction())
                     {
                         session.Save(player);
-                    }
 
-                    transaction.Commit();
+                        transaction.Commit();
+
+                    }
                 }
             }
         }
@@ -62,6 +76,18 @@
         private void RefreshCache(Player[] players)
         {
             this.AddBulk(players);
+        }
+
+        private Action<RatingStats> AddStats(Player player)
+        {
+            return stats =>
+            {
+                if (stats != null)
+                {
+                    stats.Player = player;
+                    player.RatingStats.Add(stats);
+                }
+            };
         }
     }
 }

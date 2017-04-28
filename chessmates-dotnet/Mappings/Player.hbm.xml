@@ -3,9 +3,22 @@
                    assembly="chessmates_dotnet"
                    namespace="chessmates_dotnet.Models"
 >
-  <class name="Player">
+  <class name="Player" batch-size="25">
     <id name="Id"></id>
     <property name="Username" />
     <property name="CreatedAt" column="created_at" />
+    <bag name="RatingStats" lazy="true" cascade="all-delete-orphan" inverse="true" batch-size="25">
+      <key column="Id" />
+      <one-to-many class="RatingStats" />
+    </bag>
+  </class>
+  <class name="RatingStats" table="rating_stats" lazy="true" batch-size="25">
+    <id name="Id" type="Int32" generator="native" />
+    <property name="Games" />
+    <property name="Rating" />
+    <property name="Prog" column="Progression" />
+    <property name="Rd" column="Deviation" />
+    <property name="GameType" type="GameTypesType" column="game_type_id" />
+    <many-to-one name="Player" class="Player" column="player_id" />
   </class>
 </hibernate-mapping>

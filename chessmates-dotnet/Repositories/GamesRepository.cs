@@ -2,8 +2,7 @@
 {
     using chessmates_dotnet.Lichess;
     using chessmates_dotnet.Models;
-    using System;
-    using System.Collections;
+    using NHibernate;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -30,7 +29,30 @@
 
         public void Add(Game game)
         {
-            throw new NotImplementedException();
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    session.Save(game);
+                    transaction.Commit();
+                }
+            }
+        }
+
+        private void AddBulk(Game[] games)
+        {
+            using (ISession session = NHibernateHelper.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    foreach (var game in games)
+                    {
+                        session.Save(game);
+                    }
+
+                    transaction.Commit();
+                }
+            }
         }
     }
 }

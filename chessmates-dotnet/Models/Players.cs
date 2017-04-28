@@ -2,7 +2,7 @@
 {
     public class GamePlayer
     {
-        public string UserId { get; set; }
+        public string PlayerId { get; set; }
         public int Rating { get; set; }
     }
 

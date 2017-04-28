@@ -4,16 +4,21 @@
 
     public class RatingStats
     {
-        public int Id { get; set; }
-        public int Games { get; set; }
-        public int Rating { get; set; }
-        public int Prog { get; set; }
-        public int Rd { get; set; }
+        public virtual int Id { get; set; }
+        public virtual int Games { get; set; }
+        public virtual int Rating { get; set; }
+        public virtual int Prog { get; set; }
+        public virtual int Rd { get; set; }
 
         [JsonIgnore]
-        public Player Player { get; set; }
+        public virtual Player Player { get; set; }
 
         [JsonIgnore]
-        public GameTypes GameType { get; set; }
+        public virtual GameTypes GameType { get; set; }
+
+        public override string ToString()
+        {
+            return this.GameType.ToString();
+        }
     }
 }

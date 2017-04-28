@@ -94,12 +94,12 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <EmbeddedResource Include="Mappings\Game.hbm.xml" />
-    <EmbeddedResource Include="Mappings\Player.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Player.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Mappings\RatingStats.hbm.xml" />
-    <Content Include="Mappings\GameTypes.hbm.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

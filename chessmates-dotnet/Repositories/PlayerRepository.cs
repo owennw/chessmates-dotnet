@@ -58,17 +58,16 @@
                 addStatsToPlayer(perfs.Correspondence);
             }
 
-            foreach (var player in players)
+            using (ISession session = NHibernateHelper.OpenSession())
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ITransaction transaction = session.BeginTransaction())
                 {
-                    using (ITransaction transaction = session.BeginTransaction())
+                    foreach (var player in players)
                     {
-                        session.Save(player);
-
-                        transaction.Commit();
-
+                        session.SaveOrUpdate(player);
                     }
+
+                    transaction.Commit();
                 }
             }
         }

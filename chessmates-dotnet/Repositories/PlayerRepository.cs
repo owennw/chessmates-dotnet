@@ -20,7 +20,7 @@
         {
             var players = await this.apiService.Get("user?team=scott-logic");
 
-            this.RefreshCache(players);
+            //this.RefreshCache(players);
 
             return players;
         }

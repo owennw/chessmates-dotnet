@@ -15,7 +15,9 @@ namespace chessmates_dotnet
         {
             // Web API configuration and services
 
-            config.EnableCors(new EnableCorsAttribute("http://localhost:8080", "*", "*"));
+            var cors = new EnableCorsAttribute("http://localhost:8080", "*", "*");
+            cors.SupportsCredentials = true;
+            config.EnableCors(cors);
 
             // Web API routes
             config.MapHttpAttributeRoutes();

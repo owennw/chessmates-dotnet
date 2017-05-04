@@ -15,6 +15,7 @@
             this.repository = new PlayerRepository();
         }
 
+        [Authorize(Roles = "ChessmatesUser")]
         public async Task<Player[]> GetAllPlayers()
         {
             var players = await this.repository.GetAll();
